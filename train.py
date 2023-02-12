@@ -16,8 +16,6 @@ n_head = 4
 dropout = 0.2
 # ---
 
-torch.manual_seed(1337)
-
 # wget https://raw.githubusercontent.com/karpathy/char-rnn/master/data/tinyshakespeare/input.txt
 with open('input.txt', 'r', encoding='utf-8') as f:
     text = f.read()
@@ -167,19 +165,18 @@ class BigramLanguageModel(nn.Module):
         return idx
 
 
-model = BigramLanguageModel()
-m = model.to(device)
+m = BigramLanguageModel()
+model = m.to(device)
 
 optimizer = torch.optim.AdamW(m.parameters(), lr=1e-3)
 
 for iter in range(max_iters):
-    print(iter)
     if iter % eval_interval == 0:
         losses = estimate_loss()
         print(f"step {iter}: train loss {losses['train']:.4f}, val loss {losses['val']:.4f}")
 
     xb, yb = get_batch('train')
-    logits, loss = m(xb, yb)
+    logits, loss = model(xb, yb)
     optimizer.zero_grad(set_to_none=True)
     loss.backward()
     optimizer.step()
