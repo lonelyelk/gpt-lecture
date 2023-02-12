@@ -125,7 +125,7 @@ class Block(nn.Module):
         x = x + self.ffwd(self.ln2(x))
         return x
 
-class BigramLanguageModel(nn.Module):
+class GPTLanguageModel(nn.Module):
 
     def __init__(self) -> None:
         super().__init__()
@@ -165,7 +165,7 @@ class BigramLanguageModel(nn.Module):
         return idx
 
 
-m = BigramLanguageModel()
+m = GPTLanguageModel()
 model = m.to(device)
 
 optimizer = torch.optim.AdamW(m.parameters(), lr=1e-3)
