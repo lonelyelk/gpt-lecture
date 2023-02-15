@@ -4,13 +4,13 @@ from torch.nn import functional as F
 
 # hyperparameters
 batch_size = 16
-block_size = 64
+block_size = 128
 max_iters = 5000
 eval_interval = 500
 learning_rate = 3e-4
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 eval_iters = 100
-n_embed = 64
+n_embed = 128
 n_layer = 4
 n_head = 4
 dropout = 0.2
@@ -168,7 +168,7 @@ class GPTLanguageModel(nn.Module):
 m = GPTLanguageModel()
 model = m.to(device)
 
-optimizer = torch.optim.AdamW(m.parameters(), lr=1e-3)
+optimizer = torch.optim.AdamW(model.parameters(), lr=learning_rate)
 
 for iter in range(max_iters):
     if iter % eval_interval == 0:
@@ -183,4 +183,4 @@ for iter in range(max_iters):
 
 print(loss.item())
 context = torch.zeros((1, 1), dtype=torch.long, device=device)
-print(decode(m.generate(context, max_new_tokens=400)[0].tolist()))
+print(decode(m.generate(context, max_new_tokens=10000)[0].tolist()))
